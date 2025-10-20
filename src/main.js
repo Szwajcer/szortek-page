@@ -4,6 +4,23 @@ const messages = [
 `>INITIALIZING TERMINAL...
 >ACCESS GRANTED
 >WELCOME USER: SZORTEK
+
+>SET TERMINAL/INQUIRE
+
+RIT-V300
+
+>SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F
+>SET HALT RESTART/MAINT
+
+Initializing Robco Industries(TM) MF Boot Agent v2.3.0
+RETROS BIOS
+RBIOS-4.02.08.00 52EE5.E7.E8
+Copyright 2070-2075 Robco Ind.
+Uppermen: 64 KB
+Root (6CG)
+Maintenance Mode
+
+>RUN DEBUG/ACCOUNTS.F
 `,
 startHackingGame,
 `
