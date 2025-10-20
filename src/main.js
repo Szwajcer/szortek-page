@@ -4,23 +4,6 @@ const messages = [
 `>INITIALIZING TERMINAL...
 >ACCESS GRANTED
 >WELCOME USER: SZORTEK
-
->SET TERMINAL/INQUIRE
-
-RIT-V300
-
->SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F
->SET HALT RESTART/MAINT
-
-Initializing Robco Industries(TM) MF Boot Agent v2.3.0
-RETROS BIOS
-RBIOS-4.02.08.00 52EE5.E7.E8
-Copyright 2070-2075 Robco Ind.
-Uppermen: 64 KB
-Root (6CG)
-Maintenance Mode
-
->RUN DEBUG/ACCOUNTS.F
 `,
 startHackingGame,
 `
@@ -77,13 +60,15 @@ function startHackingGame() {
 
   const passwordWords = [
     "PROXY", "INDEX", "ARRAY", "BYTE",
-    "SCRIPT", "LOOPS", "VALUE", "CACHE"
+    "SCRIPT", "LOOPS", "VALUE", "CACHE",
+    "TANGO", "FOXTROT", "WHISKEY", "MARIA",
+    "HATCH", "BOMBA", "SIUR"
   ];
   const password = passwordWords[Math.floor(Math.random() * passwordWords.length)];
   const fillerChars = "{}[]()<>!@#$%^&*+-=/\\|.";
   const rows = 16;      
   const cols = 40;      
-  let attemptsLeft = 20;
+  let attemptsLeft = 5;
 
   const grid = Array.from({ length: rows }, () => Array(cols).fill(null));
   const placements = []; 
@@ -122,7 +107,7 @@ function startHackingGame() {
   shuffled.forEach(w => placeWord(w));
 
   const instruction = document.createElement("div");
-  instruction.textContent = `> HACKING MINIGAME: SELECT THE CORRECT PASSWORD   Attempts=${attemptsLeft}`;
+  instruction.textContent = `>SELECT THE CORRECT PASSWORD   Attempts=${attemptsLeft}`;
   instruction.classList.add('instruction-line');
   output.appendChild(instruction);
 
@@ -183,7 +168,7 @@ function startHackingGame() {
     output.appendChild(resultLine);
 
     attemptsLeft--;
-    instruction.textContent = `> HACKING MINIGAME: SELECT THE CORRECT PASSWORD   Attempts=${attemptsLeft}`;
+    instruction.textContent = `>SELECT THE CORRECT PASSWORD   Attempts=${attemptsLeft}`;
 
     const allWordSpans = gridContainer.querySelectorAll('[data-word]');
     allWordSpans.forEach(span => {

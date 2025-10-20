@@ -2,6 +2,7 @@
   font-family: 'Fixedsys', monospace;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 20px;
 
   color: #33ff33;
   background-color: #001b00;
@@ -97,35 +98,39 @@ body::after {
   padding-right: 4rem;
 }
 
-/* Grid rows and characters */
+.grid-container {
+  padding: 1rem;
+}
+
 .grid-row { 
   font-family: inherit;
   white-space: pre; 
   line-height: 1.2;
   letter-spacing: 0.02em;
+  margin: 0.2em;
 }
 
-/* filler character */
 .grid-char {
   display: inline-block;
   width: 0.55em;
 }
 
-/* actual word in grid (clickable) */
 .grid-word, .hack-word {
   display: inline-block;
-  padding: 0 0.05em;
+  padding: 0 0.25em;
   margin-right: 0.05em;
   cursor: pointer;
 }
 
-/* chosen / picked word style */
+.hack-word:hover {
+ background-color: gray;
+}
+
 .word-picked {
   opacity: 0.6;
   text-decoration: line-through;
 }
 
-/* cursor element (small block) */
 .cursor {
   display: inline-block;
   width: 0.6em;
@@ -139,7 +144,6 @@ body::after {
   50% { opacity: 0; }
 }
 
-/* instruction / result lines */
 .instruction-line, .result-line, .success-line, .fail-line {
   margin-top: 0.5rem;
   font-family: inherit;
