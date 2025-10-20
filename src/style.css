@@ -1,0 +1,149 @@
+:root {
+  font-family: 'Fixedsys', monospace;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #33ff33;
+  background-color: #001b00;
+  letter-spacing: 1px;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+@font-face {
+  font-family: 'Fixedsys';
+  src: url('/birthday-riddle-page/src/fonts/Fixedsys.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  text-shadow: 0 0 4px #33ff33;
+  overflow: hidden;
+  animation: flicker 5s infinite;
+}
+
+#content {
+  width: 80%;
+  max-width: 900px;
+  margin: 2rem auto 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  font-family: 'Fixedsys', monospace;
+  color: #33ff33;
+  text-shadow: 0 0 8px #33ff33;
+  line-height: 1.4;
+  position: relative;
+  z-index: 5;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    rgba(0, 255, 0, 0.05) 2px
+  );
+  mix-blend-mode: multiply;
+  z-index: 10;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 255, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.9) 80%
+  );
+  z-index: 11;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.8;
+  }
+}
+
+#terminal-output {
+  font-family: 'Fixedsys', monospace;
+  color: #33ff33;
+  text-shadow: 0 0 8px #33ff33;
+  white-space: pre-wrap;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+/* Grid rows and characters */
+.grid-row { 
+  font-family: inherit;
+  white-space: pre; 
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+/* filler character */
+.grid-char {
+  display: inline-block;
+  width: 0.55em;
+}
+
+/* actual word in grid (clickable) */
+.grid-word, .hack-word {
+  display: inline-block;
+  padding: 0 0.05em;
+  margin-right: 0.05em;
+  cursor: pointer;
+}
+
+/* chosen / picked word style */
+.word-picked {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* cursor element (small block) */
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1em;
+  background-color: #33ff33;
+  vertical-align: bottom;
+  margin-left: 0.2em;
+  animation: blinkCursor 700ms steps(1) infinite;
+}
+@keyframes blinkCursor {
+  50% { opacity: 0; }
+}
+
+/* instruction / result lines */
+.instruction-line, .result-line, .success-line, .fail-line {
+  margin-top: 0.5rem;
+  font-family: inherit;
+}
+.success-line { color: #b8ffb8; }
+.fail-line { color: #ffb8b8; }
+
