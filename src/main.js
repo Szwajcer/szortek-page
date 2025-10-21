@@ -24,7 +24,27 @@ Maintenance Mode
 `,
 startHackingGame,
 `
-FILE 01: ABC
+>ALERT: DANGEROUS PRE-WAR TECHNOLOGY DETECTED
+>LOCATION: VICINITY OF CURRENT OPERATIONS
+>PRIORITY: HIGH
+
+A piece of dangerous pre-war technology has been located in your area.
+All personnel are advised to proceed with caution.
+
+>MISSION DIRECTIVE:
+Collect the package immediately. Ensure all standard retrieval protocols are followed.
+
+>APPROXIMATE PACKAGE LOCATION:
+Petrol Station ORLEN
+Wiślana 1, 08-530 Dęblin
+
+>REQUIRED ACCESS CODES:
+Ab1QT56
+
+REMEMBER: This technology cannot fall in the wrong hands.
+The Brotherhood of Steel command expects full compliance.
+Establish contact with the command after successful retrieval.
+>END OF MESSAGE
 `];
 
 const typingSpeed = 50;   
@@ -44,14 +64,39 @@ function typeText(text, callback) {
     if (i < text.length) {
       const char = text.charAt(i);
       cursor.insertAdjacentHTML('beforebegin', char === '\n' ? '<br>' : char);
+      if (char !== '\n' && char.trim() !== '' && (Math.random() < 0.9)) playTypeSound();
       i++;
-      setTimeout(typeChar, typingSpeed);
+      setTimeout(typeChar, typingSpeed + Math.random() * 60 - 20);
     } else {
       callback();
     }
   }
 
   typeChar();
+}
+
+function playTypeSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const bufferSize = ctx.sampleRate * 0.025; 
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (Math.random() < 0.9 ? 0.25 : 0.1);
+  }
+
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.04, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.08); 
+
+  noise.connect(gain);
+  gain.connect(ctx.destination);
+
+  noise.start();
+  noise.stop(ctx.currentTime + 0.08);
 }
 
 function runTerminalSequence() {
@@ -76,19 +121,16 @@ function startHackingGame() {
   output.innerHTML = ""; 
 
   const passwordWords = [
-    "PROXY", "INDEX", "ARRAY", "BYTE",
-    "SCRIPT", "LOOPS", "VALUE", "CACHE",
-    "TANGO", "FOXTROT", "WHISKEY", "MARIA",
-    "HATCH", "BOMBA", "SIUR"
+    "BELORE", "ALEBURZA", "SUSHIROLL", "PANDA", "ANTORUS", "ILLIDAN", "DAVE", "NEKROMANCI"
   ];
   const password = passwordWords[Math.floor(Math.random() * passwordWords.length)];
   const fillerChars = "{}[]()<>!@#$%^&*+-=/\\|.";
-  const rows = 16;      
-  const cols = 40;      
-  let attemptsLeft = 5;
+  const rows = 12;      
+  const cols = 30;      
+  let attemptsLeft = 6;
+  let gameOver = false;  
 
   const grid = Array.from({ length: rows }, () => Array(cols).fill(null));
-  const placements = []; 
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -114,7 +156,6 @@ function startHackingGame() {
       for (let i = 0; i < word.length; i++) {
         grid[row][col + i] = { char: word[i], placed: true, word, index: i };
       }
-      placements.push({ word, row, col, length: word.length });
       return true;
     }
     return false;
@@ -137,40 +178,47 @@ function startHackingGame() {
   output.appendChild(cursor);
 
   function renderGrid() {
-    gridContainer.innerHTML = '';
-    for (let r = 0; r < rows; r++) {
-      const rowDiv = document.createElement('div');
-      rowDiv.classList.add('grid-row');
+      gridContainer.innerHTML = '';
+  let currentRow = 0;
 
-      for (let c = 0; c < cols; ) {
-        const cell = grid[r][c];
+  function renderNextRow() {
+    if (currentRow >= rows) return;
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('grid-row');
 
-        if (typeof cell === 'object' && cell.placed && cell.index === 0) {
-          const word = cell.word;
-          const wordSpan = document.createElement('span');
-          wordSpan.classList.add('grid-word', 'hack-word');
-          wordSpan.textContent = word;
-          wordSpan.dataset.word = word;
-          wordSpan.style.cursor = 'pointer';
-          wordSpan.addEventListener('click', () => handleWordClick(wordSpan.dataset.word));
-          rowDiv.appendChild(wordSpan);
-          c += word.length;
-        } else {
-          const ch = (typeof cell === 'object') ? cell.char : cell;
-          const chSpan = document.createElement('span');
-          chSpan.classList.add('grid-char');
-          chSpan.textContent = ch;
-          rowDiv.appendChild(chSpan);
-          c += 1;
-        }
+    for (let c = 0; c < cols; ) {
+      const cell = grid[currentRow][c];
+
+      if (typeof cell === 'object' && cell.placed && cell.index === 0) {
+        const word = cell.word;
+        const wordSpan = document.createElement('span');
+        wordSpan.classList.add('grid-word', 'hack-word');
+        wordSpan.textContent = word;
+        wordSpan.dataset.word = word;
+        wordSpan.style.cursor = 'pointer';
+        wordSpan.addEventListener('click', () => handleWordClick(wordSpan.dataset.word));
+        rowDiv.appendChild(wordSpan);
+        c += word.length;
+      } else {
+        const ch = (typeof cell === 'object') ? cell.char : cell;
+        const chSpan = document.createElement('span');
+        chSpan.classList.add('grid-char');
+        chSpan.textContent = ch;
+        rowDiv.appendChild(chSpan);
+        c += 1;
       }
-
-      gridContainer.appendChild(rowDiv);
     }
+
+    gridContainer.appendChild(rowDiv);
+    currentRow++;
+    setTimeout(renderNextRow, 80); 
   }
 
+  renderNextRow();
+}
+
   function handleWordClick(selectedWord) {
-    if (attemptsLeft <= 0) return;
+    if (attemptsLeft <= 0 || gameOver) return;
 
     if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
 
@@ -198,7 +246,7 @@ function startHackingGame() {
     if (selectedWord === password) {
       const successLine = document.createElement('div');
       successLine.classList.add('success-line');
-      successLine.textContent = "> ACCESS GRANTED";
+      successLine.textContent = ">ACCESS GRANTED";
       output.appendChild(successLine);
       endGame(true);
       return;
@@ -207,7 +255,7 @@ function startHackingGame() {
     if (attemptsLeft <= 0) {
       const failLine = document.createElement('div');
       failLine.classList.add('fail-line');
-      failLine.textContent = `> ACCESS DENIED - PASSWORD WAS: ${password}`;
+      failLine.textContent = `>ACCESS DENIED`;
       output.appendChild(failLine);
       endGame(false);
       return;
@@ -217,15 +265,62 @@ function startHackingGame() {
   }
 
   function endGame(success) {
+    if (gameOver) return;
+    gameOver = true;
+
     const clickable = gridContainer.querySelectorAll('[data-word]');
     clickable.forEach(s => s.style.pointerEvents = 'none');
 
-    setTimeout(() => {
-      if (currentMessage < messages.length - 1) {
-        currentMessage++;
-        runTerminalSequence();
+    if (success) {
+      setTimeout(() => {
+        if (currentMessage < messages.length - 1) {
+          currentMessage++;
+          runTerminalSequence();
+        }
+      }, 1000);
+    } else {
+      const restartLine = document.createElement('div');
+      restartLine.classList.add('restart-line');
+      restartLine.textContent = ">PRESS ANY KEY TO RESTART";
+      output.appendChild(restartLine);
+
+      const restartHandler = () => {
+        document.removeEventListener('keydown', restartHandler);
+        document.removeEventListener('click', restartHandler);
+        rebootTerminal();
+      };
+
+      setTimeout(() => {
+        document.addEventListener('keydown', restartHandler);
+        document.addEventListener('click', restartHandler);
+      }, 400);
+    }
+  }
+
+  function rebootTerminal() {
+    document.body.classList.add('crt-flash');
+    setTimeout(() => document.body.classList.remove('crt-flash'), 600);
+    output.innerHTML = ""; 
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    output.appendChild(cursor);
+
+    const rebootMessage = ">REBOOTING TERMINAL...";
+    let i = 0;
+
+    function typeChar() {
+      if (i < rebootMessage.length) {
+        cursor.insertAdjacentText('beforebegin', rebootMessage[i]);
+        if (rebootMessage[i] !== '\n' && rebootMessage[i].trim() !== '' && (Math.random() < 0.9)) playTypeSound();
+        i++;
+        setTimeout(typeChar, 60);
+      } else {
+        setTimeout(() => {
+          startHackingGame();
+        }, 700);
       }
-    }, 1200);
+    }
+    typeChar();
   }
 
   renderGrid();
