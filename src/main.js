@@ -41,7 +41,7 @@ Wiślana 1, 08-530 Dęblin
 >REQUIRED ACCESS CODES:
 Ab1QT56
 
-REMEMBER: This technology cannot fall in the wrong hands.
+REMEMBER: This technology cannot fall into the wrong hands.
 The Brotherhood of Steel command expects full compliance.
 Establish contact with the command after successful retrieval.
 >END OF MESSAGE
@@ -121,7 +121,8 @@ function startHackingGame() {
   output.innerHTML = ""; 
 
   const passwordWords = [
-    "BELORE", "ALEBURZA", "SUSHIROLL", "PANDA", "ANTORUS", "ILLIDAN", "DAVE", "NEKROMANCI"
+    "BELORE", "ALEBURZA", "SUSHIROLL", "PANDA", "ANTORUS", "ILLIDAN", "DAVE", "NEKROMANCI",
+    "MALFURION", "TAZ'DINGO", "BALDURAN"
   ];
   const password = passwordWords[Math.floor(Math.random() * passwordWords.length)];
   const fillerChars = "{}[]()<>!@#$%^&*+-=/\\|.";
