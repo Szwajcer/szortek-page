@@ -35,7 +35,7 @@ All personnel are advised to proceed with caution.
 Collect the package immediately. Ensure all standard retrieval protocols are followed.
 
 >APPROXIMATE PACKAGE LOCATION:
-Petrol Station ORLEN
+Package Station ORLEN 211889
 Wiślana 1, 08-530 Dęblin
 
 >REQUIRED ACCESS CODES:
