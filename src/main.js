@@ -122,7 +122,7 @@ function startHackingGame() {
 
   const passwordWords = [
     "BELORE", "ALEBURZA", "SUSHIROLL", "PANDA", "ANTORUS", "ILLIDAN", "DAVE", "NEKROMANCI",
-    "MALFURION", "TAZ'DINGO", "BALDURAN"
+    "MALFURION", "TAZ'DINGO", "BALDURAN", "MAYOIF", "LISTERINE"
   ];
   const password = passwordWords[Math.floor(Math.random() * passwordWords.length)];
   const fillerChars = "{}[]()<>!@#$%^&*+-=/\\|.";
@@ -184,6 +184,7 @@ function startHackingGame() {
 
   function renderNextRow() {
     if (currentRow >= rows) return;
+    playTypeSound();
     const rowDiv = document.createElement('div');
     rowDiv.classList.add('grid-row');
 
@@ -220,6 +221,7 @@ function startHackingGame() {
 
   function handleWordClick(selectedWord) {
     if (attemptsLeft <= 0 || gameOver) return;
+    playTypeSound();
 
     if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
 
@@ -249,6 +251,7 @@ function startHackingGame() {
       successLine.classList.add('success-line');
       successLine.textContent = ">ACCESS GRANTED";
       output.appendChild(successLine);
+      showAchievement();
       endGame(true);
       return;
     }
@@ -327,4 +330,48 @@ function startHackingGame() {
   renderGrid();
 }
 
-runTerminalSequence();
+function waitForUserStart() {
+  output.innerHTML = "";
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  output.appendChild(cursor);
+
+  const startMsg = ">PRESS ANY KEY TO REQUEST ACCESS...";
+  let i = 0;
+
+  function typeChar() {
+    if (i < startMsg.length) {
+      cursor.insertAdjacentText('beforebegin', startMsg[i]);
+      if (startMsg[i] !== '\n' && startMsg[i].trim() !== '' && (Math.random() < 0.9)) playTypeSound();
+      i++;
+      setTimeout(typeChar, 50);
+    } else {
+      document.addEventListener('keydown', startHandler);
+      document.addEventListener('click', startHandler);
+    }
+  }
+
+  function startHandler() {
+    document.removeEventListener('keydown', startHandler);
+    document.removeEventListener('click', startHandler);
+
+    document.body.classList.add('crt-flash');
+    setTimeout(() => document.body.classList.remove('crt-flash'), 600);
+
+    output.innerHTML = "";
+    runTerminalSequence();
+  }
+
+  typeChar();
+}
+
+function showAchievement() {
+    const popup = document.getElementById('achievement-popup');
+    popup.style.display = 'flex';
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 6000); 
+}
+
+waitForUserStart();
+

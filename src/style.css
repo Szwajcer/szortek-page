@@ -1,12 +1,12 @@
 @font-face {
-  font-family: 'Fixedsys';
-  src: url('fonts/Fixedsys.ttf') format('truetype');
+  font-family: "Fixedsys";
+  src: url("fonts/Fixedsys.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 :root {
-  font-family: 'Fixedsys', sans-serif;
+  font-family: "Fixedsys", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-size: 20px;
@@ -18,11 +18,12 @@
   font-synthesis: none;
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: none; 
+  -moz-osx-font-smoothing: none;
 }
 
 body {
   margin: 0;
+  padding: 2rem 0;
   min-width: 320px;
   min-height: 100vh;
   text-shadow: 0 0 4px #33ff33;
@@ -33,7 +34,7 @@ body {
 #content {
   width: 80%;
   max-width: 900px;
-  margin: 2rem auto 0 auto;
+  margin: 0 auto 0 auto;
   padding: 2rem;
   box-sizing: border-box;
 
@@ -80,11 +81,23 @@ body::after {
 }
 
 @keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
     opacity: 1;
   }
-  20%, 24%, 55% {
-    opacity: 0.8;
+  20%,
+  24%,
+  55% {
+    opacity: 0.92;
+  }
+  22% {
+    opacity: 0.6;
   }
 }
 
@@ -101,9 +114,9 @@ body::after {
   text-align: justify;
 }
 
-.grid-row { 
+.grid-row {
   font-family: inherit;
-  white-space: pre; 
+  white-space: pre;
   line-height: 1.2;
   letter-spacing: 0.02em;
   margin: 0.2em;
@@ -115,7 +128,8 @@ body::after {
   padding-right: 0.05em;
 }
 
-.grid-word, .hack-word {
+.grid-word,
+.hack-word {
   display: inline-block;
   padding: 0 0.25em;
   margin-right: 0.05em;
@@ -123,7 +137,7 @@ body::after {
 }
 
 .hack-word:hover {
- background-color: gray;
+  background-color: gray;
 }
 
 .word-picked {
@@ -132,11 +146,21 @@ body::after {
 }
 
 @keyframes crt-flash {
-  0% { background-color: #001b00; }
-  20% { background-color: #33ff33; }
-  40% { background-color: #001b00; }
-  60% { background-color: #0f3f0f; }
-  100% { background-color: #001b00; }
+  0% {
+    background-color: rgb(0 27 0 / 0.5);
+  }
+  20% {
+    background-color: rgb(51 255 51 / 0.3);
+  }
+  40% {
+    background-color: rgb(0 27 0 / 0.5);
+  }
+  60% {
+    background-color: rgb(15 63 15/ 0.3);
+  }
+  100% {
+    background-color: rgb(0 27 0 / 0.5);
+  }
 }
 
 .crt-flash {
@@ -154,13 +178,67 @@ body::after {
   animation: blinkCursor 700ms steps(1) infinite;
 }
 @keyframes blinkCursor {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
-.instruction-line, .result-line, .success-line, .fail-line {
+.instruction-line,
+.result-line,
+.success-line,
+.fail-line {
   margin-top: 0.5rem;
   font-family: inherit;
 }
-.success-line { color: #b8ffb8; }
-.fail-line { color: #ffb8b8; }
+.success-line {
+  color: #b8ffb8;
+}
+.fail-line {
+  color: #ffb8b8;
+}
 
+#achievement-popup {
+  display: none;
+  align-items: start;
+  gap: 20px;
+
+  position: fixed;
+  bottom: 40px;
+  right: 60px;
+  z-index: 90;
+  background-color: #333;
+  color: white;
+  text-shadow: none;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.5s ease;
+}
+
+#achievement-popup img {
+  flex-shrink: 0;                   
+  width: 64px;
+  border: 1px solid #fff;
+}
+
+#achievement-popup .achievement-text {
+  display: flex;
+  flex-direction: column;
+}
+
+#achievement-popup h3 {
+  margin: 0 0 4px 0;
+}
+
+#achievement-popup p {
+  margin: 4px 0 0 0;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
