@@ -166,7 +166,7 @@ function startHackingGame() {
   shuffled.forEach(w => placeWord(w));
 
   const instruction = document.createElement("div");
-  instruction.textContent = `>SELECT THE CORRECT PASSWORD   Attempts=${attemptsLeft}`;
+  instruction.textContent = `>AUTHORIZATION NEEDED TO ACCESS FILE    Attempts=${attemptsLeft}`;
   instruction.classList.add('instruction-line');
   output.appendChild(instruction);
 
@@ -236,7 +236,7 @@ function startHackingGame() {
     output.appendChild(resultLine);
 
     attemptsLeft--;
-    instruction.textContent = `>SELECT THE CORRECT PASSWORD   Attempts=${attemptsLeft}`;
+    instruction.textContent = `>AUTHORIZATION NEEDED TO ACCESS FILE    Attempts=${attemptsLeft}`;
 
     const allWordSpans = gridContainer.querySelectorAll('[data-word]');
     allWordSpans.forEach(span => {
