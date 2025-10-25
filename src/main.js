@@ -35,14 +35,14 @@ All personnel are advised to proceed with caution.
 Collect the package immediately. Ensure all standard retrieval protocols are followed.
 
 >APPROXIMATE PACKAGE LOCATION:
-Package Station ORLEN 211889
-Wiślana 1, 08-530 Dęblin
+Package Station \u2588\u2588\u2588\u2588\u2588 211889
+\u2588\u2588\u2588\u2588\u2588\u2588\u2588 1, \u2588\u2588-\u2588\u2588\u2588 \u2588\u2588\u2588\u2588\u2588\u2588
 
 >PROBABLE NUMBER OF PACKAGE:
 AD01638K30
 
 >REQUIRED ACCESS CODE:
-651 235
+\u2588\u2588\u2588 \u2588\u2588\u2588
 
 REMEMBER: This technology cannot fall into the wrong hands.
 The Brotherhood of Steel command expects full compliance.
